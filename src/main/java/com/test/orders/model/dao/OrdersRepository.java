@@ -1,5 +1,9 @@
 package com.test.orders.model.dao;
 
-public class OrdersRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.test.orders.model.bean.Orders;
+
+public interface OrdersRepository extends JpaRepository<Orders, String>{
 
 }

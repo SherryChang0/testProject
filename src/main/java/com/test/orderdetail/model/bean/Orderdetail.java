@@ -1,5 +1,6 @@
 package com.test.orderdetail.model.bean;
 
+import com.test.orders.model.bean.Orders;
 import com.test.product.model.bean.Product;
 
 import jakarta.persistence.CascadeType;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -25,11 +27,10 @@ public class Orderdetail {
 	@Column(name = "orderItemSN")
 	private Integer orderItemSN;
 	
-	@OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-	private String orderID;
-	
-//	@OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-//	private String productID;
+	@MapsId
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="orderId")
+	private Orders orders;
 	
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productID")

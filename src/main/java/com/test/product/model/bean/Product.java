@@ -1,28 +1,17 @@
 package com.test.product.model.bean;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.test.orderdetail.model.bean.Orderdetail;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "product")
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "productID")
-	private String productID;
+	@Column(name = "productId")
+	private String productId;
 	
 	@Column(name = "productName")
 	private String productName;
@@ -33,6 +22,40 @@ public class Product {
 	@Column(name = "quantity")
 	private Integer quantity;
 	
-	@OneToMany(mappedBy = "productID", cascade = CascadeType.ALL)
-    private List<Orderdetail> orderDetail;
+	public Product() {
+		
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
 }

@@ -10,9 +10,7 @@
                 .panel-body {
                     display: flex;
                     justify-content: center;
-                    /* 水平置中 */
                     align-items: center;
-                    /* 垂直置中 */
                 }
             </style>
         </head>
@@ -32,12 +30,14 @@
                         </thead>
                         <tbody>
                             <c:forEach var="product" items="${products}">
-                                <tr>
-                                    <td>${product.productID}</td>
-                                    <td>${product.productName}</td>
-                                    <td>${product.price}</td>
-                                    <td>${product.quantity}</td>
-                                </tr>
+                                <c:if test="${product.quantity > 0}">
+                                    <tr>
+                                        <td>${product.productId}</td>
+                                        <td>${product.productName}</td>
+                                        <td>${product.price}</td>
+                                        <td>${product.quantity}</td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                         </tbody>
                         <tbody>

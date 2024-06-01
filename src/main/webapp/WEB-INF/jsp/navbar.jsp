@@ -6,7 +6,7 @@
 
     <head>
       <meta charset="UTF-8">
-      <title>Insert title here</title>
+      <title>test project</title>
       <link href="${contextRoot}/css/bootstrap.min.css" rel="stylesheet" />
     </head>
 
@@ -30,8 +30,15 @@
                   <li><a class="dropdown-item" href="${contextRoot}/allProduct">顯示商品</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="${contextRoot}/addOrders">訂單</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  訂單
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="${contextRoot}/addOrder">新增訂單</a></li>
+                  <li><a class="dropdown-item" href="${contextRoot}/allOrder">訂單內容</a></li>
+                </ul>
               </li>
             </ul>
           </div>

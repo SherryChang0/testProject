@@ -2,6 +2,8 @@
 
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <jsp:include page="navbar.jsp"></jsp:include>
+        <script src="${contextRoot}/js/bootstrap.bundle.min.js"></script>
+        <script src="${contextRoot}/js/jquery-3.6.1.min.js"></script>
         <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
         <!DOCTYPE html>
         <html>
@@ -46,10 +48,32 @@
                 }
             </style>
             <script>
-                function{
-                    
-                }
+                $(document).ready(function () {
+                    $("form").submit(function (event) {
+                        event.preventDefault();
+
+                        var productId = $("#productId").val().trim();
+                        var productName = $("#productName").val().trim();
+                        var price = $("#price").val().trim();
+                        var quantity = $("#quantity").val().trim();
+
+                        if (productId == "" || productName == "" || price == "" || quantity == "") {
+                            alert("請填寫所有欄位！");
+                            return false;
+                        }
+
+                        $.ajax({
+                            type: "POST",
+                            url: "${contextRoot}/addProduct",
+                            data: $("form").serialize(),
+                            success: function (response) {
+                                alert(response);
+                            }
+                        });
+                    });
+                });
             </script>
+
         </head>
 
         <body>

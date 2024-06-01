@@ -3,13 +3,12 @@ package com.test.product.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.test.product.model.bean.Product;
 import com.test.product.service.ProductService;
@@ -31,9 +30,12 @@ public class ProductController {
 	}
 	
 	@PostMapping("addProduct")
-	public String addProduct(@ModelAttribute("product")Product product) {
+	public ResponseEntity<String> addProduct(@ModelAttribute("product")Product product) {
+	    if (product.getProductId() == null || product.getProductName() == null || product.getQuantity() == null) {
+	        return ResponseEntity.badRequest().body("請填寫所有欄位！");
+	    }
 		productService.insert(product);
-		return "redirect:/add";
+		return ResponseEntity.ok().body("新增商品成功！");
 	}
 	
     @GetMapping("/allProduct")

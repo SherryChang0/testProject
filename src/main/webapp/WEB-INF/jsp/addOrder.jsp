@@ -2,6 +2,7 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             <c:set var="contextRoot" value="${pageContext.request.contextPath}" />
+            <script src="${contextRoot}/js/bootstrap.bundle.min.js"></script>
             <script src="${contextRoot}/js/jquery-3.6.1.min.js"></script>
             <jsp:include page="navbar.jsp"></jsp:include>
             <!DOCTYPE html>
@@ -10,7 +11,6 @@
             <head>
                 <meta charset="UTF-8">
                 <title>新增訂單</title>
-                <link href="${contextRoot}/css/bootstrap.min.css" rel="stylesheet" />
                 <style>
                     form {
                         width: 70%;
@@ -59,26 +59,6 @@
                         text-align: center;
                     }
                 </style>
-                
-                <script>
-                    $(document).ready(function () {
-                        $("form").submit(function (event) {
-                            var isValid = true;
-                            $("input[type='number']").each(function () {
-                                var max = $(this).attr("max");
-                                var val = $(this).val();
-                                if (val > max) {
-                                    isValid = false;
-                                    alert("購買數量不能大於庫存量！");
-                                    return false; 
-                                }
-                            });
-                            if (!isValid) {
-                                event.preventDefault();
-                            }
-                        });
-                    });
-                </script>
             </head>
 
             <body>
@@ -88,7 +68,6 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>選擇</th>
                                     <th>商品編號</th>
                                     <th>商品名稱</th>
                                     <th>售價</th>
@@ -100,14 +79,12 @@
                                 <c:forEach var="product" items="${products}">
                                     <c:if test="${product.quantity > 0}">
                                         <tr>
-                                            <td><input type="checkbox" name="productId" value="${product.productId}">
-                                            </td>
                                             <td>${product.productId}</td>
                                             <td>${product.productName}</td>
                                             <td>${product.price}</td>
                                             <td>${product.quantity}</td>
-                                            <td><input type="number" name="quantity_${product.productId}" min="1"
-                                                    max="${product.quantity}" value="1"></td>
+                                            <td><input type="number" name="quantity_${product.productId}" min="0"
+                                                    max="${product.quantity}" value="0"></td>
                                         </tr>
                                     </c:if>
                                 </c:forEach>

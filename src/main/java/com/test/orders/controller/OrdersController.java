@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.orderdetail.model.bean.Orderdetail;
@@ -43,15 +44,16 @@ public class OrdersController {
     public String addOrder(@RequestParam Map<String, String> params, Model model) {
         List<Orderdetail> orderDetail = ordersService.createOrderDetails(params);
         int totalAmount = ordersService.calculateTotalAmount(orderDetail);
-        model.addAttribute("orderDetails", orderDetail);
+        model.addAttribute("orderDetail", orderDetail);
         model.addAttribute("totalAmount", totalAmount);
         return "confirmOrder";
     }
     
     @PostMapping("/confirmOrder")
-    public String confirmOrder(@RequestParam List<Orderdetail> orderDetails) {
-        Orders order = ordersService.createOrder(orderDetails);
-        ordersService.updateProductQuantities(orderDetails);
-        return "redirect:/orderSuccess";
+    public String confirmOrder(@RequestParam List<Orderdetail> orderDetail, Model model) {
+        Orders order = ordersService.createOrder(orderDetail);
+        model.addAttribute(order);
+        ordersService.updateProductQuantities(orderDetail);
+        return "allOrder";
     }
 }

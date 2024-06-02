@@ -61,20 +61,20 @@ public class OrdersService {
 		return totalAmount;
 	}
 
-	public Orders createOrder(List<Orderdetail> orderDetails) {
+	public Orders createOrder(List<Orderdetail> orderDetail) {
 		Orders order = new Orders();
-		order.setOrderDetails(orderDetails);
-		order.setPrice(calculateTotalAmount(orderDetails));
+		order.setOrderDetails(orderDetail);
+		order.setPrice(calculateTotalAmount(orderDetail));
 		order.setPayStatus(false);
 		ordersRepository.save(order);
 		return order;
 	}
-	
-    public void updateProductQuantities(List<Orderdetail> orderDetail) {
-        for (Orderdetail detail : orderDetail) {
-            Product product = detail.getProduct();
-            product.setQuantity(product.getQuantity() - detail.getQuantity());
-            productRepository.save(product);
-        }
-    }
+
+	public void updateProductQuantities(List<Orderdetail> orderDetail) {
+		for (Orderdetail detail : orderDetail) {
+			Product product = detail.getProduct();
+			product.setQuantity(product.getQuantity() - detail.getQuantity());
+			productRepository.save(product);
+		}
+	}
 }

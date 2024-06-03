@@ -29,8 +29,8 @@
                 }
             </style>
             <script>
-                function buy(){
-                    
+                function buy() {
+                    alert("購買成功!");
                 }
             </script>
         </head>
@@ -38,33 +38,43 @@
         <body>
             <div class="container">
                 <h2>訂單確認</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>商品編號</th>
-                            <th>商品名稱</th>
-                            <th>單價</th>
-                            <th>數量</th>
-                            <th>單品項總價</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="detail" items="${orderDetail}">
-                            <tr>
-                                <td>${detail.product.productId}</td>
-                                <td>${detail.product.productName}</td>
-                                <td>${detail.product.price}</td>
-                                <td>${detail.quantity}</td>
-                                <td>${detail.itemPrice}</td>
-                            </tr>
-                        </c:forEach>
-                        <tr>
-                            <td colspan="4" style="font-weight: 700;">總金額</td>
-                            <td>${totalAmount}</td>
-                        </tr>
-                    </tbody>
-                </table>
                 <form id="orderForm" action="${contextRoot}/confirmOrder" method="post" onsubmit="buy()">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>商品編號</th>
+                                <th>商品名稱</th>
+                                <th>單價</th>
+                                <th>數量</th>
+                                <th>單品項總價</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="detail" items="${orderDetail}" varStatus="status">
+                                <tr>
+                                    <td>${detail.product.productId}</td>
+                                    <td>${detail.product.productName}</td>
+                                    <td>${detail.product.price}</td>
+                                    <td>${detail.quantity}</td>
+                                    <td>${detail.itemPrice}</td>
+                                    <input type="hidden" name="orderDetails[${status.index}].product.productId"
+                                        value="${detail.product.productId}" />
+                                    <input type="hidden" name="orderDetails[${status.index}].product.productName"
+                                        value="${detail.product.productName}" />
+                                    <input type="hidden" name="orderDetails[${status.index}].product.price"
+                                        value="${detail.product.price}" />
+                                    <input type="hidden" name="orderDetails[${status.index}].quantity"
+                                        value="${detail.quantity}" />
+                                    <input type="hidden" name="orderDetails[${status.index}].itemPrice"
+                                        value="${detail.itemPrice}" />
+                                </tr>
+                            </c:forEach>
+                            <tr>
+                                <td colspan="4" style="font-weight: 700;">總金額</td>
+                                <td>${totalAmount}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <input type="submit" value="確認訂單">
                 </form>
             </div>

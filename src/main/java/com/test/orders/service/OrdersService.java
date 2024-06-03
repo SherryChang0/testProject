@@ -1,5 +1,7 @@
 package com.test.orders.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,6 @@ public class OrdersService {
 				String productId = entry.getKey().substring(9);
 				int quantity = Integer.parseInt(entry.getValue());
 				Product product = productRepository.findById(productId).orElseThrow();
-
 				Orderdetail detail = new Orderdetail();
 				detail.setProduct(product);
 				detail.setQuantity(quantity);
@@ -62,19 +63,39 @@ public class OrdersService {
 	}
 
 	public Orders createOrder(List<Orderdetail> orderDetail) {
+		// 時間
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		String formattedDateTime = now.format(formatter);
+ 
+		long currentTimeMillis = System.currentTimeMillis();
+
 		Orders order = new Orders();
-		order.setOrderDetails(orderDetail);
+		order.setOrderId("Ms" + formattedDateTime + currentTimeMillis);
+		order.setMemberId(formattedDateTime.substring(0, 6));
 		order.setPrice(calculateTotalAmount(orderDetail));
 		order.setPayStatus(false);
-		ordersRepository.save(order);
-		return order;
+		
+        Orders savedOrder = ordersRepository.save(order);
+        for (Orderdetail detail : orderDetail) {
+            detail.setOrder(savedOrder);
+            orderdetailRepository.save(detail);
+        }
+
+        return savedOrder;
 	}
 
 	public void updateProductQuantities(List<Orderdetail> orderDetail) {
-		for (Orderdetail detail : orderDetail) {
-			Product product = detail.getProduct();
-			product.setQuantity(product.getQuantity() - detail.getQuantity());
-			productRepository.save(product);
-		}
+	    for (Orderdetail detail : orderDetail) {
+	        Product product = detail.getProduct();
+	        if (product != null) {
+	            int updatedQuantity = product.getQuantity() - detail.getQuantity();
+	            product.setQuantity(updatedQuantity);
+	            productRepository.save(product);
+	        } else {
+	            System.out.println("Product is null: " + detail);
+	        }
+	    }
 	}
+
 }

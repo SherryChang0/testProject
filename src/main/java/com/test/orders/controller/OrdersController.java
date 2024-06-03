@@ -1,5 +1,6 @@
 package com.test.orders.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.test.orderdetail.model.bean.OrderForm;
 import com.test.orderdetail.model.bean.Orderdetail;
 import com.test.orders.model.bean.Orders;
 import com.test.orders.service.OrdersService;
@@ -49,11 +52,17 @@ public class OrdersController {
         return "confirmOrder";
     }
     
+    @ModelAttribute("orderDetail")
+    public List<Orderdetail> getOrderDetail() {
+        return new ArrayList<>();
+    }
+    
     @PostMapping("/confirmOrder")
-    public String confirmOrder(@RequestParam List<Orderdetail> orderDetail, Model model) {
-        Orders order = ordersService.createOrder(orderDetail);
-        model.addAttribute(order);
-        ordersService.updateProductQuantities(orderDetail);
+    public String confirmOrder(@ModelAttribute("orderDetail") OrderForm orderForm, Model model) {
+    	List<Orderdetail> orderDetails = orderForm.getOrderDetails();
+    	Orders order = ordersService.createOrder(orderDetails);
+        model.addAttribute("order", order);
+        ordersService.updateProductQuantities(orderDetails);
         return "allOrder";
     }
 }
